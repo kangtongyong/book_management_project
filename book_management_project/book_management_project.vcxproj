@@ -128,8 +128,14 @@
     <ClCompile Include="borrow.c" />
     <ClCompile Include="color.c" />
     <ClCompile Include="login.c" />
+<<<<<<< HEAD
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
+=======
+    <ClCompile Include="main.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+>>>>>>> origin/master
     <ClCompile Include="ui.c" />
   </ItemGroup>
   <ItemGroup>

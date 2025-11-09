@@ -1,10 +1,10 @@
-#ifndef LOGIN_H
+ï»¿#ifndef LOGIN_H
 #define LOGIN_H
 #pragma once
 #include "structs.h"
 
 /*
-* ·Î±×ÀÎ °ü·Ã ÇÔ¼ö¸¦ Á¤ÀÇÇÏ´Â Çì´õ ÆÄÀÏ
+* ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 */
 
 int testlogin(void);
