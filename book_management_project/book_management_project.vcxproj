@@ -129,6 +129,7 @@
     <ClCompile Include="color.c" />
     <ClCompile Include="login.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="menu.c" />
     <ClCompile Include="ui.c" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="database.h" />
     <ClInclude Include="login.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>

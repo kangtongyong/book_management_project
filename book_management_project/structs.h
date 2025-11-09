@@ -64,7 +64,7 @@ typedef enum dberror{
 	DB_WRITE_ERROR = -3,
 	DB_RECORD_NOT_FOUND = -4,
 	DB_DUPLICATE_RECORD = -5
-} DBERROR;;
+} DBERROR;
 
 typedef struct date{
 	uint16_t year;					//년도 4바이트
@@ -87,7 +87,6 @@ typedef struct book {
 
 typedef struct user{																				
 	char userName[MAX_USER_NAME_LENGTH];										//사용자 이름
-	char userPassword[MAX_USER_PASSWORD_LENGHTH];								//사용자 비밀번호
 	ACCOUNTTYPE accountType;													//사용자 타입 ADMIN, USER 중 하나
 	uint8_t borrowedBookCount;													//현재 대여한 책 권 수
 	uint16_t LateDay;															//책 연체 누적 일 수
