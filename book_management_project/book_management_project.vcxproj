@@ -143,8 +143,8 @@
     <ClInclude Include="assistant.h" />
     <ClInclude Include="book.h" />
     <ClInclude Include="borrow.h" />
-    <ClInclude Include="color.h" />
     <ClInclude Include="database.h" />
+    <ClInclude Include="color.h" />
     <ClInclude Include="login.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="structs.h" />
