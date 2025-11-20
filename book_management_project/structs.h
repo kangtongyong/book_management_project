@@ -95,7 +95,7 @@ typedef struct user{
 }USER;
 
 typedef struct login {
-	ACCOUNTTYPE accountType;												//사용자의 타입 ADMIN, USER 중 하나
+	ACCOUNTTYPE accountType;												//사용자 타입 ADMIN, USER 중 하나
 	UserId loginID;															//사용자 아이디
 	char loginPW[MAX_USER_PASSWORD_LENGHTH];								//사용자의 비밀번호
 }LOGIN;
