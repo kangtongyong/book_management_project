@@ -13,8 +13,12 @@
 
 int main(void) 
 {
+	//  데이터베이스 초기화 (동적 메모리 할당)
+	InitDatabase();
 
 	DisplayMain();
-	//DisplayLogin();
+
+	////	데이터베이스 해제(동적 메모리 해제)
+	//FreeDatabase();
 	return 0;
 }

@@ -1,3 +1,4 @@
+#define	_CRT_SECURE_NO_WARNINGS
 #include "database.h"
 #include "structs.h"
 #include <stdio.h>

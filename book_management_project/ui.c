@@ -69,12 +69,12 @@ void DisplayLoginScreen(void)
 	MoveCursor(42, 16);//11
 	printf("로그인을 해주세요.");
 
-	DrawSquare(30, 2, 35, 17);
-	MoveCursor(37, 18);
+	DrawSquare(36, 2, 32, 17);
+	MoveCursor(34, 18);
 	printf("ID :");
 
-	DrawSquare(30, 2, 35, 20);
-	MoveCursor(37, 21);
+	DrawSquare(36, 2, 32, 20);
+	MoveCursor(34, 21);
 	printf("PW :");
 
 	return;
