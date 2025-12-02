@@ -13,7 +13,6 @@
 
 int main(void) 
 {
-	int count = 0;
 	//  데이터베이스 초기화 (동적 메모리 할당)
 	InitDatabase();
 

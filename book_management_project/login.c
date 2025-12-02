@@ -63,7 +63,7 @@ int testlogin(const char* id, const char* pw)
 }
 
 /*
-* 함수명 : registerUser()
+* 함수명 : signup()
 * 기능 : 회원가입 기능
 * 매개변수 : 없음
 * 반환값 : 없음

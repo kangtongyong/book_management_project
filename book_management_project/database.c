@@ -313,7 +313,7 @@ void AddUser(USER newUser, LOGIN newLogin)
 * 반환값 : 정수값
 */
 
-//book.txt 형식 : bookID|bookName|writer|translator|bookStatus|maker
+//book.txt 형식 : bookID|bookName|writer|translator|maker|bookStatus
 DBERROR BookDatabaseSave(int lastnum)
 {
 	FILE* bookfp = fopen("book.txt","w");
@@ -329,8 +329,9 @@ DBERROR BookDatabaseSave(int lastnum)
 			books[i].bookName,
 			books[i].writer,
 			books[i].translator,
-			books[i].bookStatus,
-			books[i].maker);
+			books[i].maker,
+			books[i].bookStatus
+			);
 	}
 	
 	fclose(bookfp);
@@ -389,13 +390,14 @@ DBERROR BookDatabaseLoad(int max, int* count) //max에 bookCount 넣어서 호출
 				strncpy(books[idx].translator, token, MAX_TRANSLATOR_LENGTH);
 				books[idx].translator[MAX_TRANSLATOR_LENGTH - 1] = '\0';
 				break;
-			case 4: //bookStatus
-				books[idx].bookStatus = (BOOKSTATUS)atoi(token);
-				break;
-			case 5: //maker
+			case 4: //maker
 				strncpy(books[idx].maker, token, MAX_MAKER_LENGTH);
 				books[idx].maker[MAX_MAKER_LENGTH - 1] = '\0';
 				break;
+			case 5: //bookStatus
+				books[idx].bookStatus = (BOOKSTATUS)atoi(token);
+				break;
+			
 			}
 			field++;
 			token = strtok(NULL, "|");
@@ -427,8 +429,9 @@ DBERROR BookDatabaseAppend(int idx)
 		books[idx].bookName,
 		books[idx].writer,
 		books[idx].translator,
-		books[idx].bookStatus,
-		books[idx].maker);
+		books[idx].maker,
+		books[idx].bookStatus
+		);
 
 
 	fclose(bookfp);
