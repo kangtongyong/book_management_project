@@ -76,5 +76,11 @@
     <Text Include="user.txt">
       <Filter>리소스 파일</Filter>
     </Text>
+    <Text Include="book.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="borrow.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
   </ItemGroup>
 </Project>
