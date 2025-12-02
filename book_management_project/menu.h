@@ -30,5 +30,6 @@ typedef enum {
 
 void DisplayMain(void);							//처음 메인 메뉴 출력 함수 원형
 void DisplayLogin(void);						//로그인 화면 출력 함수 원형
+void MenuSignUp(void)							//	회원가입 화면 출력 함수 원형
 
 #endif

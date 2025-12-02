@@ -130,7 +130,7 @@ int signup(const char * id, const char * pw,
         return DB_FILE_NOT_FOUND;
     }
 
-    fprintf(fp, "%d|%s|%s|%s|%s|0|||",
+    fprintf(fp, "%d|%s|%s|%s|%s|0|||\n",
         (int)ACCOUNT_TYPE_USER,
         id,
         pw,

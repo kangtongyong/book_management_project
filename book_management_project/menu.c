@@ -90,15 +90,20 @@ void DisplayMain(void)
 				{
 					continue;
 				}
-				
+
 			}
 
 
 			case MENU_SIGNUP:
 				// 회원가입 화면으로 이동
-				//DisplaySignupScreen();
+				DisplaySignUpScreen();
 				choose++;
-				
+				if (DisplaySignUpScreen == NULL)
+				{
+					continue;
+				}
+
+
 			case MENU_EXIT:
 				// 프로그램 종료
 				DisplayExit(0);
@@ -163,11 +168,11 @@ void DisplayLogin(void)
 			MoveCursor(40, 14);
 			printf("관리자 %s님 환영합니다.\n", buffid);
 			_getch();   //	콘솔에서 관리자 %s님 환영합니다. 읽을 시간 주기
-			
+
 			//	관리자 / 사용자 메뉴로 분기
 			return;     // 로그인 화면 종료
 		}
-		else if(result == ACCOUNT_TYPE_USER)
+		else if (result == ACCOUNT_TYPE_USER)
 		{
 			_getch();
 			//	사용자 / 사용자 메뉴로 분기
@@ -230,3 +235,102 @@ void DisplayLogin(void)
 * 매개변수 : 없음
 * 반환값 : 없음
 */
+
+void MenuSignUp(void)
+{
+	int currentIndex = MENU_SIGNUP; // 현재 선택된 메뉴 인덱스
+	int ch;
+
+	char buffid[MAX_USER_ID_LENGTH] = { 0 };			//	아이디 입력 버퍼
+	char buffpw[MAX_USER_PASSWORD_LENGHTH] = { 0 };		//	비밀번호 입력 버퍼
+	char buffname[MAX_USER_NAME_LENGTH] = { 0 };		//	이름 입력 버퍼
+	char buffphonenum[MAX_PHONE_LENGTH] = { 0 };		//	전화번호 입력 버퍼
+
+	while (1)
+	{
+		DisplaySignUpScreen();
+
+		//	커서 보이기
+		Cursor(1);
+
+		MoveCursor(35 + (int)strlen("ID :"), 15);
+		printf("                              ");	//	기존 입력 지우기
+		MoveCursor(35 + (int)strlen("ID :"), 15);
+		scanf("%29s", buffid);
+
+		//	PW 입력
+		MoveCursor(35 + (int)strlen("PW :"), 18);
+		printf("                              ");
+		MoveCursor(35 + (int)strlen("PW :"), 18);
+		scanf("%29s", buffpw);
+
+		//	name 입력
+		MoveCursor(35 + (int)strlen("PW :"), 21);
+		printf("                              ");
+		MoveCursor(35 + (int)strlen("PW :"), 21);
+		scanf("%10s", buffname);
+
+		//	phonenum 입력
+		MoveCursor(35 + (int)strlen("PW :"), 24);
+		printf("                              ");
+		MoveCursor(35 + (int)strlen("PW :"), 24);
+		scanf("%15s", buffphonenum);
+
+		//	커서 숨기기
+		Cursor(0);
+
+		int result = signup(buffid, buffpw, buffname, buffphonenum);
+
+		if (result == DB_DUPLICATE_RECORD)
+		{
+			//	동일한 아이디 존재
+			system("cls");
+			MoveCursor(36, 24);
+			printf("DB파일 내에 동일한 아이디가 존재합니다.");
+			MoveCursor(34, 26);
+			printf("다시 시도하려면 아무 키나 누르세요. (ESC: 종료)");
+
+			ch = _getch();
+			if (ch == 27) // ESC
+			{
+				DisplayExit(0);
+			}
+			else
+			{
+				continue;
+			}
+		}
+		else if (result == DB_FILE_NOT_FOUND)
+		{
+			// DB 문제 (user.txt 읽기 실패 등)
+			MoveCursor(36, 26);
+			printf("사용자 DB 파일을 열 수 없습니다.");
+			MoveCursor(32, 28);
+			printf("(아무 키나 누르면 메인으로 돌아갑니다.)");
+			_getch();
+			return;     // 메인 메뉴로 복귀
+		}
+		else if (result == DB_SUCCESS)
+		{
+			system("cls");
+			DrawSquare(100, 30, 0, 0);
+			MoveCursor(35, 18);
+			printf("회원가입 완료");
+			MoveCursor(32, 20);
+			printf("(아무 키나 누르면 메인으로 돌아갑니다.)");
+
+			_getch();
+			return;     // 메인 메뉴로 복귀
+		}
+		else
+		{
+			//	기타 에러
+			MoveCursor(35, 24);
+			printf("알 수 없는 DB 에러가 발생했습니다.");
+			MoveCursor(33, 26);
+			printf("(코드: %d)\n", result);
+			_getch();
+			DisplayExit(0);
+		}
+	}
+}
