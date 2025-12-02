@@ -90,7 +90,7 @@ void DisplayMain(void)
 				{
 					continue;
 				}
-				break;
+				
 			}
 
 
@@ -98,11 +98,10 @@ void DisplayMain(void)
 				// 회원가입 화면으로 이동
 				//DisplaySignupScreen();
 				choose++;
-				break;
+				
 			case MENU_EXIT:
 				// 프로그램 종료
 				DisplayExit(0);
-				break;
 			}
 		}
 
@@ -159,6 +158,10 @@ void DisplayLogin(void)
 		//	결과에 따른 처리
 		if (result == ACCOUNT_TYPE_ADMIN)
 		{
+			system("cls");
+			DrawSquare(100, 30, 0, 0);
+			MoveCursor(40, 14);
+			printf("관리자 %s님 환영합니다.\n", buffid);
 			_getch();   //	콘솔에서 관리자 %s님 환영합니다. 읽을 시간 주기
 			
 			//	관리자 / 사용자 메뉴로 분기

@@ -17,8 +17,6 @@ int bookCount = 0;
 BORROW* borrows = NULL;
 int borrowCount = 0;
 
-REQUEST* requests = NULL;
-
 
 /*
 * 함수명 : InitDatabase()
@@ -30,8 +28,13 @@ REQUEST* requests = NULL;
 void InitDatabase(void)
 {
 	int Ucount = countlines("user.txt");
+	if (Ucount < 0) Ucount = 0;
+
 	int Bcount = countlines("book.txt");
+	if (Bcount < 0) Bcount = 0;
+
 	int Brcount = countlines("borrow.txt");
+	if (Brcount < 0) Brcount = 0;
 	
 	//user 동적 메모리 할당
 	users = (USER*)malloc(sizeof(USER) * Ucount);
@@ -69,7 +72,6 @@ void InitDatabase(void)
 	userCount = Ucount;				//전역 변수에 개수 저장
 	bookCount = Bcount;
 	borrowCount = Brcount;
-
 }
 
 /*
@@ -152,7 +154,7 @@ DBERROR UserDatabaseSave(int lastnum)
 * 반환 값 : DBERROR
 */
 
-DBERROR UserDatabaseAppend()
+DBERROR UserDatabaseAppend(int idx)
 {
 	FILE* userfp = fopen("user.txt", "a");
 	if (userfp == NULL)
@@ -161,17 +163,17 @@ DBERROR UserDatabaseAppend()
 	}
 
 	fprintf(userfp, "%d|%s|%s|%s|%s|%u",
-		(int)users->accountType,
-		logins->loginID,
-		logins->loginPW,
-		users->userName,
-		users->phoneNum,
-		users->borrowedBookCount
+		(int)users[idx].accountType,
+		logins[idx].loginID,
+		logins[idx].loginPW,
+		users[idx].userName,
+		users[idx].phoneNum,
+		users[idx].borrowedBookCount
 	);
 
 	for(int j = 0; j < MAX_BORROWED_BOOKS; j++)
 	{
-		fprintf(userfp, "|%s", users->borrowedBooks[j]);
+		fprintf(userfp, "|%s", users[idx].borrowedBooks[j]);
 	}
 
 	fprintf(userfp, "\n");
@@ -188,6 +190,8 @@ DBERROR UserDatabaseAppend()
 
 DBERROR UserDatabaseLoad(int max, int* count)	//max에 userCount 넣어서 호출
 {
+	
+
 	FILE* userfp = fopen("user.txt", "r");
 	if (userfp == NULL)
 	{
@@ -200,6 +204,7 @@ DBERROR UserDatabaseLoad(int max, int* count)	//max에 userCount 넣어서 호출
 
 	while (idx < max && fgets(line, sizeof(line), userfp) != NULL)
 	{
+		
 		//줄 끝 제거
 		line[strcspn(line, "\r\n")] = '\0';
 
@@ -252,18 +257,54 @@ DBERROR UserDatabaseLoad(int max, int* count)	//max에 userCount 넣어서 호출
 					break;
 				}
 
+			}
 			field++;
 			token = strtok(NULL, "|");
-			}
 		}
 
 		idx++;
 	}
+	
 
 	fclose(userfp);
 	*count = idx;
 	return DB_SUCCESS;
 }
+
+/*
+* 함수명 : AddUser()
+* 기능 : 사용자 추가 함수 (users, logins 배열 동적 재할당 및 추가)
+* 매개변수 : USER newUser, LOGIN newLogin
+* 반환값 : 없음
+*/
+
+void AddUser(USER newUser, LOGIN newLogin)
+{
+	int newCount = userCount + 1;
+
+	// 1) users 배열 확장
+	USER* tempUsers = realloc(users, sizeof(USER) * newCount);
+	if (tempUsers == NULL) {
+		printf("users 재할당 실패!\n");
+		return;
+	}
+	users = tempUsers;
+
+	// 2) logins 배열 확장
+	LOGIN* tempLogins = realloc(logins, sizeof(LOGIN) * newCount);
+	if (tempLogins == NULL) {
+		printf("logins 재할당 실패!\n");
+		return;
+	}
+	logins = tempLogins;
+
+	// 3) 데이터 추가
+	users[userCount] = newUser;
+	logins[userCount] = newLogin;
+
+	userCount = newCount;
+}
+
 
 /*
 * 함수명 : BookDatabaseSave()
@@ -370,10 +411,10 @@ DBERROR BookDatabaseLoad(int max, int* count) //max에 bookCount 넣어서 호출
 /*
 * 함수명 : BookDatabaseAppend()
 * 기능 : book.txt에 책 한권 추가하는 함수
-* 매개변수 : 없음
+* 매개변수 : 마지막 인덱스 값
 * 반환값 : 정수값
 */
-DBERROR BookDatabaseAppend()
+DBERROR BookDatabaseAppend(int idx)
 {
 	FILE* bookfp = fopen("book.txt", "a");
 	if (bookfp == NULL)
@@ -382,16 +423,37 @@ DBERROR BookDatabaseAppend()
 	}
 
 	fprintf(bookfp, "%s|%s|%s|%s|%d|%s\n",
-		books->bookID,
-		books->bookName,
-		books->writer,
-		books->translator,
-		books->bookStatus,
-		books->maker);
+		books[idx].bookID,
+		books[idx].bookName,
+		books[idx].writer,
+		books[idx].translator,
+		books[idx].bookStatus,
+		books[idx].maker);
 
 
 	fclose(bookfp);
 	return DB_SUCCESS;
+}
+
+/*
+* 함수명 : AddBook()
+* 기능 : 책 추가 함수 (books 배열 동적 재할당 및 추가)
+* 매개변수 : BOOK newBook
+* 반환값 : 없음
+*/
+void AddBook(BOOK newBook)
+{
+	int newCount = bookCount + 1;
+
+	BOOK* temp = realloc(books, sizeof(BOOK) * newCount);
+	if (temp == NULL) {
+		printf("books 재할당 실패!\n");
+		return;
+	}
+	books = temp;
+
+	books[bookCount] = newBook;
+	bookCount = newCount;
 }
 
 
@@ -411,11 +473,12 @@ DBERROR BorrowDatabaseSave(int lastnum)
 	{
 		return DB_FILE_NOT_FOUND;
 	}
+
 	for (int i = 0; i <= lastnum; i++)
 	{
 		fprintf(borrowfp, "%s|%s|%u|%u|%u|%u|%u|%u|%u\n",
-			borrows[i].bookID.bookID,
-			borrows[i].userID.loginID,
+			borrows[i].bookID,
+			borrows[i].userID,
 			borrows[i].borrowDate.year,
 			borrows[i].borrowDate.month,
 			borrows[i].borrowDate.day,
@@ -463,12 +526,12 @@ DBERROR BorrowDatabaseLoad(int max, int* count) //max에 borrowCount 넣어서 호출
 			switch (field)
 			{
 			case 0: //bookID
-				strncpy(borrows[idx].bookID.bookID, token, MAX_BOOK_ID_LENGTH);
-				borrows[idx].bookID.bookID[MAX_BOOK_ID_LENGTH - 1] = '\0';
+				strncpy(borrows[idx].bookID, token, MAX_BOOK_ID_LENGTH);
+				borrows[idx].bookID[MAX_BOOK_ID_LENGTH - 1] = '\0';
 				break;
 			case 1: //userID
-				strncpy(borrows[idx].userID.loginID, token, MAX_USER_ID_LENGTH);
-				borrows[idx].userID.loginID[MAX_USER_ID_LENGTH - 1] = '\0';
+				strncpy(borrows[idx].userID, token, MAX_USER_ID_LENGTH);
+				borrows[idx].userID[MAX_USER_ID_LENGTH - 1] = '\0';
 				break;
 			case 2: //borrowDate year
 				borrows[idx].borrowDate.year = (uint16_t)atoi(token);
@@ -508,7 +571,7 @@ DBERROR BorrowDatabaseLoad(int max, int* count) //max에 borrowCount 넣어서 호출
 * 매개변수 : 없음
 * 반환값 : 정수값
 */
-DBERROR BorrowDatabaseAppend()
+DBERROR BorrowDatabaseAppend(int idx)
 {
 	FILE* borrowfp = fopen("borrow.txt", "a");
 	if (borrowfp == NULL)
@@ -516,18 +579,39 @@ DBERROR BorrowDatabaseAppend()
 		return DB_FILE_NOT_FOUND;
 	}
 	fprintf(borrowfp, "%s|%s|%u|%u|%u|%u|%u|%u|%u\n",
-		borrows->bookID.bookID,
-		borrows->userID.loginID,
-		borrows->borrowDate.year,
-		borrows->borrowDate.month,
-		borrows->borrowDate.day,
-		borrows->returnDate.year,
-		borrows->returnDate.month,
-		borrows->returnDate.day,
-		borrows->overdueDay
+		borrows[idx].bookID,
+		borrows[idx].userID,
+		borrows[idx].borrowDate.year,
+		borrows[idx].borrowDate.month,
+		borrows[idx].borrowDate.day,
+		borrows[idx].returnDate.year,
+		borrows[idx].returnDate.month,
+		borrows[idx].returnDate.day,
+		borrows[idx].overdueDay
 	);
 	fclose(borrowfp);
 	return DB_SUCCESS;
+}
+
+/*
+* 함수명 : AddBorrow()
+* 기능 : 대여 추가 함수 (borrows 배열 동적 재할당 및 추가)
+* 매개변수 : BORROW newBorrow
+* 반환값 : 없음
+*/
+void AddBorrow(BORROW newBorrow)
+{
+	int newCount = borrowCount + 1;
+
+	BORROW* temp = realloc(borrows, sizeof(BORROW) * newCount);
+	if (temp == NULL) {
+		printf("borrows 재할당 실패!\n");
+		return;
+	}
+	borrows = temp;
+
+	borrows[borrowCount] = newBorrow;
+	borrowCount = newCount;
 }
 
 /*

@@ -46,7 +46,7 @@ void InitConsole(char title[])
 {
 	SetColorBG(COLOR_BLACK);
 	SetColorFont(COLOR_WHITE);
-	system("mode con:cols = 100, lines = 30");
+	system("mode con: cols = 100 lines = 30");
 	SetConsoleTitleA(title);
 	ClearConsole();
 

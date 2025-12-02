@@ -2,37 +2,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <time.h>
+#include <string.h>
+#include "database.h"
 #include "structs.h"
 #include "assistant.h"
 #include "borrow.h"
 
 //대여 관련 함수
-
-/*
-* 함수명 : borrowBook()
-* 기능 : 책 대여 함수
-* 매개변수 : 구조체 포인터 및 구조체
-* 반환값 : 없음    
-*/
-void borrowBook(BORROW* b, BOOK book, LOGIN user) {
-    b->bookID = book;
-    b->userID = user;
-
-    // 오늘 날짜 입력
-    setToday(&b->borrowDate);
-
-    // 반납일 = 대여일 + 14일
-    b->dueDate = b->borrowDate;
-    addDays(&b->dueDate, 14);
-
-    // 반납 날짜는 초기엔 0
-    b->returnDate.year = 0;
-    b->returnDate.month = 0;
-    b->returnDate.day = 0;
-
-    b->overdueDay = 0;
-}
-
 
 /*
 * 함수명 : returnBook()
