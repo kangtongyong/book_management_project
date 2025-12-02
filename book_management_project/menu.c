@@ -157,7 +157,7 @@ void DisplayLogin(void)
 		MoveCursor(35 + (int)strlen("PW :"), 21);
 		printf("                              ");
 		MoveCursor(35 + (int)strlen("PW :"), 21);
-		scanf("%29s", buffpw);	// 최대 29글자 (널 포함 30)
+		InputStarPW(buffpw, MAX_USER_PASSWORD_LENGHTH);	// 최대 29글자 (널 포함 30)
 
 		//	커서 숨기기
 		Cursor(0);

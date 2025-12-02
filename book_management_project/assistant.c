@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <time.h>
+#include <ctype.h> 
 
 /*
 * 콘솔 화면 지우기 함수
@@ -178,3 +179,58 @@ void addDays(Date* d, int days)
 	}
 }
 
+
+/*
+* 비밀번호 입력 함수
+* - 키보드에서 한 글자씩 읽어서 buffer에 저장
+* - 화면에는 실제 글자 대신 '*' 출력
+* - Enter를 누르면 입력 종료
+* 매개변수 : char* buffer   - PW를 저장할 배열
+*           int   maxLen    - 배열 크기 (널문자 포함 최대 길이)
+*/
+void InputStarPW(char* buffer, int maxLen)
+{
+	int len = 0;
+	int ch;
+
+	// 안전하게 초기화
+	if (buffer == NULL || maxLen <= 1)
+		return;
+
+	buffer[0] = '\0';
+
+	while (1)
+	{
+		ch = _getch();   // 키 하나 입력 (화면에 자동 출력 안 됨)
+
+		// Enter 키 → 입력 종료
+		if (ch == 13)    // '\r'
+		{
+			buffer[len] = '\0';
+			break;
+		}
+		// Backspace 처리
+		else if (ch == 8)   // '\b'
+		{
+			if (len > 0)
+			{
+				// 버퍼에서 한 글자 삭제
+				len--;
+				buffer[len] = '\0';
+
+				// 화면에서 '*' 한 개 지우기
+				printf("\b \b");   // 커서 뒤로, 공백 출력, 다시 뒤로
+			}
+		}
+		// 일반 출력 가능한 문자
+		else if (isprint(ch) && len < maxLen - 1)
+		{
+			buffer[len] = (char)ch;
+			len++;
+			buffer[len] = '\0';
+
+			// 화면에는 '*'만 출력
+			printf("*");
+		}
+	}
+}
