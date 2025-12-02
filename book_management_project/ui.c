@@ -81,6 +81,48 @@ void DisplayLoginScreen(void)
 }
 
 /*
+* 회원가입 화면 출력 함수
+* 매개변수 : 없음
+* 반환값 : 없음
+*/
+
+void DisplaySignUpScreen(void)
+{
+	ClearConsole();
+	//화면 테두리
+	DrawSquare(100, 30, 0, 0);
+	DrawSquare(50, 28, 25, 1);
+
+	//타이틀 테두리
+	DrawSquare(25, 4, 37, 5);
+	MoveCursor(41, 7);
+	printf("도서관 관리 프로그램");
+
+
+	//로그인 박스 테두리
+	MoveCursor(41, 12);//11
+	printf("회원가입을 해주세요.");
+
+	DrawSquare(36, 2, 32, 14);
+	MoveCursor(34, 15);
+	printf("ID :");
+
+	DrawSquare(36, 2, 32, 17);
+	MoveCursor(34, 18);
+	printf("PW :");
+
+	DrawSquare(36, 2, 32, 20);
+	MoveCursor(34, 21);
+	printf("이름 :");
+
+	DrawSquare(36, 2, 32, 23);
+	MoveCursor(34, 24);
+	printf("전화번호 :");
+
+	return;
+}
+
+/*
 * 버튼 화면 출력 함수 (비활성)
 * 매개변수 : int x - 버튼 X 좌표
 * 		     int y - 버튼 Y 좌표

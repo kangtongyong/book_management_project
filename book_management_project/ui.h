@@ -9,6 +9,7 @@
 */
 void DisplayMainScreen(void);										// 메인 화면 출력 함수 원형
 void DisplayLoginScreen(void);										// 로그인 화면 출력 함수 원형
+void DisplaySignUpScreen(void);										// 회원가입 화면 출력 함수 원형
 void DisplayButtonAct(int x, int y, ColorType BG, ColorType FONT);		// 화면에 버튼 생성 함수 원형 (활성)
 void DisplayButton(int x, int y, ColorType BG, ColorType FONT);		// 화면에 버튼 생성 함수 원형(비활성)
 
